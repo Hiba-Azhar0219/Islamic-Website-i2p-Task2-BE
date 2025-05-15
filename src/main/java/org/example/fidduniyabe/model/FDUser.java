@@ -1,9 +1,6 @@
 package org.example.fidduniyabe.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
@@ -11,12 +8,14 @@ import lombok.Data;
 @Table(name = "fd_user")
 public class FDUser {
     @Id
-    @Column(name = "fd_user_id", length = 40)
-    int fd_user_id;
+    @Column(name = "fd_user_id", length = 10)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    private long fd_user_id;
 
 
     @Column(name = "fd_user_password", length = 10)
-    String fd_user_password;
+    private String fd_user_password;
 
     @Column(name = "fd_isAdmin", columnDefinition = "boolean")
     boolean fd_isAdmin;
