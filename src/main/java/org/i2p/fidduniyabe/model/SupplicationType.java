@@ -1,26 +1,49 @@
 package org.i2p.fidduniyabe.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "supplication_type")
 public class SupplicationType {
     @Id
-    @Column(name = "supplication_type_id", length = 30)
+    @Column(name = "type_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long supplication_type_id;
+    long type_id;
 
-    @Column(name = "supplication_type_name", length = 30)
-    String supplication_type_name;
+    @Column(name = "type")
+    String type;
 
-    @Column(name = "supplication_type_image_url")
-    String supplication_category_image_url;
+    @Column(name = "image_url")
+    String image_url;
+
+    public SupplicationType(long type_id, String type, String image_url) {
+        this.type_id = type_id;
+        this.type = type;
+        this.image_url = image_url;
+    }
+//
+//    public long type_id() {
+//        return type_id;
+//    }
+//
+//    public void settype_id(long type_id) {
+//        this.type_id = type_id;
+//    }
+//
+//    public String gettype() {
+//        return type;
+//    }
+//
+//    public void settype(String type) {
+//        this.type = type;
+//    }
+//
+//    public String getImage_url() {
+//        return image_url;
+//    }
+//
+//    public void setImage_url(String image_url) {
+//        this.image_url = image_url;
+//    }
+
 }
