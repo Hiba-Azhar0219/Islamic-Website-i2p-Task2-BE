@@ -1,10 +1,19 @@
 package org.i2p.fidduniyabe.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "supplication_type")
 public class SupplicationType {
+    SupplicationType() {}
+
     @Id
     @Column(name = "type_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,29 +30,8 @@ public class SupplicationType {
         this.type = type;
         this.image_url = image_url;
     }
-//
-//    public long type_id() {
-//        return type_id;
-//    }
-//
-//    public void settype_id(long type_id) {
-//        this.type_id = type_id;
-//    }
-//
-//    public String gettype() {
-//        return type;
-//    }
-//
-//    public void settype(String type) {
-//        this.type = type;
-//    }
-//
-//    public String getImage_url() {
-//        return image_url;
-//    }
-//
-//    public void setImage_url(String image_url) {
-//        this.image_url = image_url;
-//    }
+
+
+
 
 }

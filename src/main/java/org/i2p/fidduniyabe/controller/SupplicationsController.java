@@ -5,10 +5,7 @@ import org.i2p.fidduniyabe.service.SupplicationsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/supplications")
@@ -25,7 +22,20 @@ public class SupplicationsController {
       supplicationsService.add(supplication);
       return new ResponseEntity<>(supplication, HttpStatus.CREATED);
 
+    }
 
+    //Delete Supplication by ID
+    @DeleteMapping("delete/{id}")
+    public ResponseEntity<Object> delete(@PathVariable Long id) {
+        supplicationsService.deleteById(id);
+        return ResponseEntity.ok("Supplication with id " + id + " deleted successfully.");
+
+    }
+
+    //Read all Supplications
+    @GetMapping("/all")
+    public ResponseEntity<Object> findAll() {
+        return new ResponseEntity<>(supplicationsService.findAll(), HttpStatus.OK);
     }
 
 }

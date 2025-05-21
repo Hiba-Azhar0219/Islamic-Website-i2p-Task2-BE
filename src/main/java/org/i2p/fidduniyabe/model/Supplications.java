@@ -1,19 +1,22 @@
 package org.i2p.fidduniyabe.model;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
-
+@Getter
+@Setter
 @Entity
 @Table(name = "supplications")
 public class Supplications{
 
+    public Supplications() {}
     @Id
     @Column(name = "supplication_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
    long supplication_id;
 
-    //this will be the forign key
-//    @Column(name = "type_id")
-//    String type_id;
+    @Column(name = "type")
+    String type;
 
     @Column(name = "sup_id_in_csv")
     String sup_id_in_csv;
@@ -51,4 +54,5 @@ public class Supplications{
         this.reference_chapter = reference_chapter;
         this.reference_text = reference_text;
     }
+
 }
