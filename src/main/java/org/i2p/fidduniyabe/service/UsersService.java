@@ -23,7 +23,10 @@ public class UsersService {
 
     //add user
     public Users add(Users user) {
-        // Encrypt password before saving
+        if (user.getUserId() != 0) {
+            throw new IllegalArgumentException("User ID is auto-generated. Please do not provide it manually.");
+        }
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return usersRepository.save(user);
     }
@@ -50,7 +53,6 @@ public class UsersService {
             if (updatedUser.getGender() != null) {
                 existingUser.setGender(updatedUser.getGender());
             }
-
             existingUser.setUpdatedAt(LocalDateTime.now());
 
             return usersRepository.save(existingUser);
@@ -58,7 +60,6 @@ public class UsersService {
             throw new RuntimeException("User with ID " + id + " not found.");
         }
     }
-
 
     //soft delete
     public boolean remove(Long id) {
@@ -72,8 +73,7 @@ public class UsersService {
         else return false;
     }
 
-
-    //     HardDeleteById
+    // HardDeleteById
     public String delete(Long id) {
         if (usersRepository.existsById(id)) {
             usersRepository.deleteById(id);
@@ -85,13 +85,9 @@ public class UsersService {
     public List<Users> findAllActiveUsers() {
         return usersRepository.findByIsActiveTrue();
     }
-
-
     public List<Users> findAll() {
-
         return (List<Users>) usersRepository.findAll();
     }
-
 
 //    user login
 @Autowired

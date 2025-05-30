@@ -20,32 +20,15 @@ public class SupplicationsController {
         this.supplicationsService = supplicationsService;
     }
 
-//    //add supplication
-//    @PostMapping("/create")
-//    public ResponseEntity<Object> add(@RequestBody Supplications supplication) {
-//            if (supplication.getSupplicationId() != 0) {
-//                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-//                        .body("ID should not be provided, it is auto-generated.");
-//            }
-//            else {
-//                supplicationsService.add(supplication);
-//                return new ResponseEntity<>(supplication, HttpStatus.CREATED);
-//            }
-//    }
-
-
     @PostMapping("/create")
     public ResponseEntity<Object> add(@Valid @RequestBody Supplications supplication) {
         if (supplication.getSupplicationId() != 0) {
             throw new IllegalArgumentException("ID should not be provided, it is auto-generated.");
         }
-
-        // Save logic here (this will throw DataIntegrityViolationException on duplicates)
         supplicationsService.add(supplication);
 
         return new ResponseEntity<>(supplication, HttpStatus.CREATED);
     }
-
 
     //update any of the fields of supplication
     @PutMapping("/update/{id}")
@@ -58,7 +41,7 @@ public class SupplicationsController {
         }
     }
 
-    // Delete Supplication by ID
+    // soft delete Supplication by ID
     @DeleteMapping("/remove/{id}")
     public ResponseEntity<String> removeSupplication(@PathVariable Long id) {
         boolean result = supplicationsService.removeSupplication(id);
@@ -69,7 +52,7 @@ public class SupplicationsController {
         }
     }
 
-
+    // hard delete Supplication by ID
     @DeleteMapping("delete/{id}")
     public ResponseEntity<Object> delete(@PathVariable Long id) {
         supplicationsService.deleteById(id);
@@ -94,5 +77,4 @@ public class SupplicationsController {
     public ResponseEntity<Object> findAllIncludingInActive() {
         return new ResponseEntity<>(supplicationsService.findAllIncludingInActive(), HttpStatus.OK);
     }
-
 }

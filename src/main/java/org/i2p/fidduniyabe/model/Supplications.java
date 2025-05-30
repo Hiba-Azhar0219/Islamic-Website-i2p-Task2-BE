@@ -20,13 +20,16 @@ public class Supplications{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
    long supplicationId;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "supplication_type_id")
-    @JsonBackReference
-    private SupplicationType supplicationTypeID;
+//    @ManyToOne(fetch = FetchType.EAGER)
+//    @JoinColumn(name = "supplication_type_id")
+//    @JsonBackReference
+//    private SupplicationType supplicationTypeID;
 
-    @Column(name = "sup_id_in_csv")
-    int supIdInCsv;
+//    @Column(name = "sup_id_in_csv")
+//    int supIdInCsv;
+
+ @Column(name = "id")
+  private int id;
 
     @Column(name = "arabic", columnDefinition="text", nullable = false,unique=true)
     @NotBlank(message = "Arabic text is required")
@@ -69,6 +72,9 @@ public class Supplications{
     @Column(name = "ref_chapter",columnDefinition = "text")
     String refChapter;
 
+    @Column(name = "heading_roman",columnDefinition = "text")
+    String headingRoman;
+
     @Column(name = "is_active")
     boolean isActive = true;
 
@@ -82,6 +88,5 @@ public class Supplications{
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
-
 
 }

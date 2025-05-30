@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
 public class SupplicationType {
    public SupplicationType() {}
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "type_id")
@@ -29,7 +28,6 @@ public class SupplicationType {
    @NotBlank
     @Column(name = "image_url", nullable = false)
     String imageUrl;
-
 
     @Column(name = "is_active")
     boolean isActive = true;

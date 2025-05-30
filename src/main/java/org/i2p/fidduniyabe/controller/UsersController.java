@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
@@ -21,8 +22,12 @@ public class UsersController {
 
     @PostMapping("/create")
     public ResponseEntity<Object> add(@Valid @RequestBody Users user) {
-       usersService.add(user);
-       return new ResponseEntity<>(user, HttpStatus.CREATED);
+        try {
+            Users createdUser = usersService.add(user);
+            return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 
     //update method
@@ -35,7 +40,6 @@ public class UsersController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
         }
     }
-
 
     @DeleteMapping("/remove/{id}")
     public ResponseEntity<String> remove(@PathVariable Long id) {
@@ -58,8 +62,6 @@ public class UsersController {
             return ResponseEntity.ok(result);
         }
     }
-
-
     @GetMapping("/getAllIncludingInActive")
     public ResponseEntity<Object> findAll() {
         return new ResponseEntity<>(usersService.findAll(), HttpStatus.OK);
@@ -68,7 +70,12 @@ public class UsersController {
     @GetMapping("/getAll")
     public ResponseEntity<Object> getAllActiveUsers() {
         List<Users> activeUsers = usersService.findAllActiveUsers();
-        return new ResponseEntity<>(activeUsers, HttpStatus.OK);
+
+        Map<String, Object> response = Map.of(
+                "count", activeUsers.size(),
+                "users", activeUsers
+        );
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     //user login
@@ -81,7 +88,5 @@ public class UsersController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
         }
     }
-
-
 }
 

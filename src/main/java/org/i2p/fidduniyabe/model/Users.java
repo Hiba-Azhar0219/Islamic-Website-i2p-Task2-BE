@@ -17,8 +17,6 @@ import java.time.LocalDateTime;
 @Table(name = "users")
 public class Users {
 
-
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id", unique  = true)

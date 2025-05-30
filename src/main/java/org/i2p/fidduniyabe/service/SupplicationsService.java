@@ -34,7 +34,7 @@ public class SupplicationsService {
     public Supplications update(Long id, Supplications updatedSupplication) {
         return supplicationsRepository.findById(id).map(existing -> {
 
-            existing.setSupIdInCsv(updatedSupplication.getSupIdInCsv() > 0 ? updatedSupplication.getSupIdInCsv() : 0);
+//            existing.setSupIdInCsv(updatedSupplication.getSupIdInCsv() > 0 ? updatedSupplication.getSupIdInCsv() : 0);
 
             if (updatedSupplication.getArabic() != null) {
                 existing.setArabic(updatedSupplication.getArabic());

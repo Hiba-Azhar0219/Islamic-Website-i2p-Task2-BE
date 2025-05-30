@@ -23,8 +23,16 @@ public class SupplicationsTypeController {
 
     @PostMapping("/create")
     public ResponseEntity<Object> add(@Valid @RequestBody SupplicationType supplicationType) {
-        supplicationTypeService.add(supplicationType);
-        return new ResponseEntity<>(supplicationType, HttpStatus.CREATED);
+        System.out.println("DEBUG: Received typeId = " + supplicationType.getTypeId());
+
+        if (supplicationType.getTypeId() != 0) {
+            return new ResponseEntity<>(
+                    Map.of("error", "SupplicationType ID will be auto-generated. Do not provide it in the request."),
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+        SupplicationType created = supplicationTypeService.add(supplicationType);
+        return new ResponseEntity<>(created, HttpStatus.CREATED);
     }
 
     //update
@@ -53,7 +61,6 @@ public class SupplicationsTypeController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteById(@PathVariable Long id) {
         String result = supplicationTypeService.deleteById(id);
-
         if (result.contains("not found")) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(result);
         } else {
@@ -61,12 +68,20 @@ public class SupplicationsTypeController {
         }
     }
 
-
     //Read all Supplications
     @GetMapping("/getAll")
-    public ResponseEntity<List<SupplicationType>> findAll() {
-        return ResponseEntity.ok(supplicationTypeService.findAll());
+    public ResponseEntity<Object> findAll() {
+        List<SupplicationType> list = supplicationTypeService.findAll();
+        int count = list.size();
+
+        Map<String, Object> response = Map.of(
+                "count", count,
+                "data", list
+        );
+
+        return ResponseEntity.ok(response);
     }
+
 
     @GetMapping("/getAllIncludingInActive")
     public ResponseEntity<Object> findAllIncludingInActive() {
