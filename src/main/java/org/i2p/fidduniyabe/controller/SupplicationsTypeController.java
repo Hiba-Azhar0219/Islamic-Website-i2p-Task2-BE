@@ -1,7 +1,7 @@
 package org.i2p.fidduniyabe.controller;
 import jakarta.validation.Valid;
+import org.i2p.fidduniyabe.exception.InvalidSupplicationTypeException;
 import org.i2p.fidduniyabe.model.SupplicationType;
-import org.i2p.fidduniyabe.model.Supplications;
 import org.i2p.fidduniyabe.service.SupplicationTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,18 +23,13 @@ public class SupplicationsTypeController {
 
     @PostMapping("/create")
     public ResponseEntity<Object> add(@Valid @RequestBody SupplicationType supplicationType) {
-        System.out.println("DEBUG: Received typeId = " + supplicationType.getTypeId());
-
-        if (supplicationType.getTypeId() != 0) {
-            return new ResponseEntity<>(
-                    Map.of("error", "SupplicationType ID will be auto-generated. Do not provide it in the request."),
-                    HttpStatus.BAD_REQUEST
-            );
+        try {
+            SupplicationType created = supplicationTypeService.add(supplicationType);
+            return new ResponseEntity<>(created, HttpStatus.CREATED);
+        } catch (InvalidSupplicationTypeException ex) {
+            return new ResponseEntity<>(Map.of("error", ex.getMessage()), HttpStatus.BAD_REQUEST);
         }
-        SupplicationType created = supplicationTypeService.add(supplicationType);
-        return new ResponseEntity<>(created, HttpStatus.CREATED);
     }
-
     //update
     @PutMapping("/update/{id}")
     public ResponseEntity<Object> update(@PathVariable Long id, @RequestBody SupplicationType updatedType) {
@@ -81,7 +76,6 @@ public class SupplicationsTypeController {
 
         return ResponseEntity.ok(response);
     }
-
 
     @GetMapping("/getAllIncludingInActive")
     public ResponseEntity<Object> findAllIncludingInActive() {

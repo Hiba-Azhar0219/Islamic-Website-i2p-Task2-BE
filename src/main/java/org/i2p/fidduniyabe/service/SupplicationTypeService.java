@@ -1,5 +1,6 @@
 package org.i2p.fidduniyabe.service;
 import org.i2p.fidduniyabe.exception.GlobalExceptionHandler;
+import org.i2p.fidduniyabe.exception.InvalidSupplicationTypeException;
 import org.i2p.fidduniyabe.model.SupplicationType;
 import org.i2p.fidduniyabe.repository.SupplicationTypeRepository;
 import org.springframework.stereotype.Service;
@@ -18,8 +19,19 @@ public class SupplicationTypeService {
 
     //create Supplication Type
     public SupplicationType add(SupplicationType supplicationType){
-        SupplicationType newSupplicationType  = supplicationTypeRepository.save(supplicationType);
-        return newSupplicationType;
+        if (supplicationType.getTypeId() != 0) {
+            throw new InvalidSupplicationTypeException("Do not provide typeId manually. It will be auto-generated.");
+        }
+
+        if (supplicationType.getName() != null && supplicationType.getName().trim().isEmpty()) {
+            throw new InvalidSupplicationTypeException("SupplicationType name must not be an empty string.");
+        }
+
+        if (supplicationType.getImageUrl() != null && supplicationType.getImageUrl().trim().isEmpty()) {
+            throw new InvalidSupplicationTypeException("SupplicationType imageUrl must not be an empty string.");
+        }
+
+        return supplicationTypeRepository.save(supplicationType);
     }
 
     //Update type or image by id
