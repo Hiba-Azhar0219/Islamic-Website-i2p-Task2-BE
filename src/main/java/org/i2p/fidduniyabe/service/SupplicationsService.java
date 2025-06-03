@@ -1,4 +1,5 @@
 package org.i2p.fidduniyabe.service;
+import org.i2p.fidduniyabe.model.SupplicationType;
 import org.i2p.fidduniyabe.model.Supplications;
 import org.i2p.fidduniyabe.repository.SupplicationTypeRepository;
 import org.i2p.fidduniyabe.repository.SupplicationsRepository;
@@ -22,6 +23,30 @@ public class SupplicationsService {
     public SupplicationsService(SupplicationsRepository supplicationsRepository) {
         this.supplicationsRepository = supplicationsRepository;
     }
+
+
+
+//
+//    public Supplications add(Supplications supplication) {
+//        Long typeId = supplication.getSupplicationTypeID().getSupplicationTypeId();
+//
+//        // Fetch the existing SupplicationType from the database
+//        supplication.setSupplicationTypeID(
+//                supplicationTypeRepository.findById(typeId)
+//                        .orElseThrow(() -> new IllegalArgumentException("Invalid SupplicationType ID: " + typeId))
+//        );
+//
+//        return supplicationsRepository.save(supplication);
+//    }
+
+//    public Supplications add(Supplications supplication) {
+//        Long typeId = supplication.getSupplicationTypeID().getSupplicationTypeId();
+//        SupplicationType existingType = supplicationTypeRepository.findById(typeId)
+//                .orElseThrow(() -> new IllegalArgumentException("SupplicationType ID " + typeId + " not found."));
+//        supplication.setSupplicationTypeID(existingType); // replace transient with managed instance
+//
+//        return supplicationsRepository.save(supplication);
+//    }
 
 
     public Supplications add(Supplications supplication) {
@@ -70,6 +95,10 @@ public class SupplicationsService {
             }
             if (updatedSupplication.getRefChapter() != null) {
                 existing.setRefChapter(updatedSupplication.getRefChapter());
+            }
+
+            if (updatedSupplication.getHeadingRoman() != null) {
+                existing.setHeadingRoman(updatedSupplication.getHeadingRoman());
             }
             existing.setUpdatedAt(LocalDateTime.now());
 

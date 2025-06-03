@@ -16,20 +16,18 @@ public class Supplications{
 
     public Supplications() {}
     @Id
-    @Column(name = "supplication_id", nullable = false, updatable = false, unique = true )
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-   long supplicationId;
+    @Column(name = "supplication_id", nullable = false, updatable = false, unique = true )
+    long supplicationId;
 
+//    @NotBlank(message = "Mention the supplication type ID")
 //    @ManyToOne(fetch = FetchType.EAGER)
-//    @JoinColumn(name = "supplication_type_id")
+//    @JoinColumn(name = "type_id", nullable = false)
 //    @JsonBackReference
-//    private SupplicationType supplicationTypeID;
+//    private SupplicationType typeId;
 
-//    @Column(name = "sup_id_in_csv")
-//    int supIdInCsv;
-
- @Column(name = "id")
-  private int id;
+    @Column(name = "sup_id_in_csv")
+    int supIdInCsv;
 
     @Column(name = "arabic", columnDefinition="text", nullable = false,unique=true)
     @NotBlank(message = "Arabic text is required")
