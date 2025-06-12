@@ -31,6 +31,7 @@ public class SupplicationTypeService {
             throw new InvalidSupplicationTypeException("SupplicationType imageUrl must not be an empty string.");
         }
 
+
         return supplicationTypeRepository.save(supplicationType);
     }
 

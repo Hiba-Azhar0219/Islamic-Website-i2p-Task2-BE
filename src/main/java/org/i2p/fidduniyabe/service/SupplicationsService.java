@@ -113,6 +113,12 @@ public class SupplicationsService {
         if (optional.isPresent()) {
             Supplications supplication = optional.get();
             supplication.setIsActive(false);
+            Long typeId = supplication.getSupplicationType().getTypeId();
+
+            SupplicationType type = supplicationTypeRepository.findById(typeId)
+                    .orElseThrow(() -> new IllegalArgumentException("SupplicationType with ID " + typeId + " not found."));
+
+            supplication.setSupplicationType(type);
             supplicationsRepository.save(supplication);
             return true;
         }
@@ -120,7 +126,7 @@ public class SupplicationsService {
     }
 
     public void deleteById(Long id) {
-       supplicationsRepository.deleteById(id);
+    supplicationsRepository.deleteById(id);
     }
 
 

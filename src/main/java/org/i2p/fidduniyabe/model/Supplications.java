@@ -20,18 +20,17 @@ public class Supplications{
     @Column(name = "supplication_id", nullable = false, updatable = false, unique = true )
     long supplicationId;
 
-//    @NotBlank(message = "Mention the supplication type ID")
-//    @ManyToOne(fetch = FetchType.EAGER)
-//    @JoinColumn(name = "type_id", nullable = false)
-//    @JsonBackReference
-//    private SupplicationType typeId;
+    @NotBlank(message = "Mention the supplication type ID")
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "type_id", nullable = false)
+    @JsonBackReference
+    private SupplicationType supplicationType;
 
     @Column(name = "sup_id_in_csv")
     int supIdInCsv;
 
     @Column(name = "arabic", columnDefinition="text", nullable = false,unique=true)
     @NotBlank(message = "Arabic text is required")
-
     String arabic;
 
     @Column(name = "english",columnDefinition = "text",nullable = false, unique = true)
