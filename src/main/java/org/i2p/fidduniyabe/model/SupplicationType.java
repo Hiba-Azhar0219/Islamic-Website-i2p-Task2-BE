@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-
 import java.time.LocalDateTime;
 
 @Getter
@@ -26,7 +25,8 @@ public class SupplicationType {
     String name;
 
    @NotBlank
-    @Column(name = "image_url", nullable = false)
+
+   @Column(name = "image_url", nullable = false)
     String imageUrl;
 
     @Column(name = "is_active")

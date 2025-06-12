@@ -31,7 +31,9 @@ public class SupplicationTypeService {
             throw new InvalidSupplicationTypeException("SupplicationType imageUrl must not be an empty string.");
         }
 
-
+        if (!supplicationType.getImageUrl().matches("(?i)^.*\\.(png|jpg|jpeg|gif)$")) {
+            throw new InvalidSupplicationTypeException("Image URL must end with .png, .jpg, .jpeg, or .gif");
+        }
         return supplicationTypeRepository.save(supplicationType);
     }
 
