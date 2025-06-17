@@ -43,6 +43,7 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable()) // Optional but commonly needed for APIs
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.POST, "/users/create").permitAll()  
                         .requestMatchers(HttpMethod.POST, "/users/google").permitAll()
                         .anyRequest().authenticated()
                 );
