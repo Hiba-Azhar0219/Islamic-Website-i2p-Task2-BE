@@ -39,8 +39,8 @@ public class UsersService {
         if (optionalUser.isPresent()) {
             Users existingUser = optionalUser.get();
 
-            if (updatedUser.getUsername() != null) {
-                existingUser.setUsername(updatedUser.getUsername());
+            if (updatedUser.getName() != null) {
+                existingUser.setName(updatedUser.getName());
             }
             if (updatedUser.getEmail() != null) {
                 existingUser.setEmail(updatedUser.getEmail());
@@ -104,6 +104,10 @@ private JwtUtil jwtUtil; // Injected JWT util
             throw new RuntimeException("Invalid email or password");
         }
     }
+    public Users findByEmail(String email) {
+        return usersRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+    }
 
 
     // Handle Google OAuth user creation/login
@@ -113,10 +117,8 @@ private JwtUtil jwtUtil; // Injected JWT util
         if (existingUserOpt.isPresent()) {
             return existingUserOpt.get(); // Already registered
         }
-
         // Set encoded dummy password for OAuth users
         user.setPassword(passwordEncoder.encode("google-oauth"));
-
         // Set default values if not provided
         if (user.getGender() == null) {
             user.setGender(Gender.Other);

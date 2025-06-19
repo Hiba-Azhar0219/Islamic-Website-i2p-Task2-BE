@@ -65,7 +65,6 @@ public class UsersController {
         }
     }
 
-
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Object> delete(@PathVariable long id) {
         String result = usersService.delete(id);
@@ -103,8 +102,19 @@ public class UsersController {
     public ResponseEntity<?> login(@RequestBody Users loginUser) {
         try {
             String token = usersService.login(loginUser.getEmail(), loginUser.getPassword());
+            Users user = usersService.findByEmail(loginUser.getEmail());
+
+            Map<String, Object> userData = new HashMap<>();
+            userData.put("email", user.getEmail());
+            userData.put("name", user.getName());
+            userData.put("isAdmin", user.isAdmin());
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("token", token);
+            response.put("user", userData);
             logger.info("User with email " + loginUser.getEmail() +"logged in successfully");
-            return ResponseEntity.ok("JWT Token: " + token);
+
+            return ResponseEntity.ok(response);
         } catch (RuntimeException ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
         }
@@ -114,10 +124,10 @@ public class UsersController {
     @PostMapping("/google")
     public ResponseEntity<Map<String, String>> registerGoogleUser(@RequestBody Users user) {
         usersService.registerOrLoginGoogleUser(user);
+        logger.info("User saved successfully in Backend");
         Map<String, String> response = new HashMap<>();
         response.put("message", "User saved or already exists");
         return ResponseEntity.ok(response);
     }
-
 }
 
