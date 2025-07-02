@@ -118,7 +118,7 @@ private JwtUtil jwtUtil; // Injected JWT util
             return existingUserOpt.get(); // Already registered
         }
         // Set encoded dummy password for OAuth users
-        user.setPassword(passwordEncoder.encode("google-oauth"));
+        user.setPassword(passwordEncoder.encode("password"));
         // Set default values if not provided
         if (user.getGender() == null) {
             user.setGender(Gender.Other);

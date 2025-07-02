@@ -9,9 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.multipart.MultipartFile;
+import java.io.File;
+import java.io.IOException;
 import java.util.Map;
+import java.util.List;
 
 @RestController
 @RequestMapping("supplicationType")
@@ -97,6 +99,35 @@ public class SupplicationsTypeController {
     public ResponseEntity<Object> findAllIncludingInActive() {
         logger.info("supplication type list has been returned including inactive status");
         return new ResponseEntity<>(supplicationTypeService.findAllIncludingInActive(), HttpStatus.OK);
+    }
+
+    @PostMapping("/uploadImage")
+    public ResponseEntity<?> uploadImage(@RequestParam("file") MultipartFile file) {
+        if (file.isEmpty()) {
+            return ResponseEntity.badRequest().body("File is empty.");
+        }
+
+        try {
+            // ✅ Save to a fixed folder outside of temp directories
+            String uploadDir = System.getProperty("user.dir") + "/uploads";
+            File directory = new File(uploadDir);
+            if (!directory.exists()) {
+                directory.mkdirs();  // 💡 Create uploads/ if missing
+            }
+
+            // Save the file
+            String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+            File destination = new File(uploadDir, fileName);
+            file.transferTo(destination);
+
+            // URL to access image later (assuming uploads/ is served statically)
+            String fileUrl = "http://localhost:3001/uploads/" + fileName;
+
+            return ResponseEntity.ok(Map.of("imageUrl", fileUrl));
+        } catch (IOException e) {
+            logger.error("File upload failed", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload image.");
+        }
     }
 
 
